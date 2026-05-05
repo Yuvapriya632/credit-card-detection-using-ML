@@ -1,0 +1,257 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup | Credit Card Fraud Detection</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f2f6f9;
+    }
+
+    header {
+      background-color: #0c3c60;
+      color: #fff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .navbar-brand {
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #fff;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #ffc107;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+      height: 100%;
+    }
+
+    .left-side {
+      flex: 1;
+      background-image: url("{% static 'images/csing.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .left-side h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .left-side p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 600px;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+    }
+
+    .right-side {
+      flex: 1;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    form {
+      background: #f7f9fc;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 1s ease;
+    }
+
+    form h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #0c3c60;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #26a8cf;
+      outline: none;
+    }
+
+    button {
+      background-color: #0c3c60;
+      color: white;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #105989;
+    }
+
+    .redirect-text {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .redirect-text a {
+      color: #d40d0d;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .redirect-text a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .left-side, .right-side {
+        width: 100%;
+        flex: none;
+      }
+
+      .left-side {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <header>
+    <a class="navbar-brand" href="{% url 'home' %}">Credit Card Fraud Detection</a>
+    <ul class="nav-links">
+      <li><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+      {% if user.is_authenticated %}
+        <li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+        <li><a class="nav-link" href="{% url 'signup' %}">Signup</a></li>
+        <li><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+      {% endif %}
+    </ul>
+  </header>
+
+  <!-- Page Layout -->
+  <div class="container">
+    <!-- Left Panel -->
+    <div class="left-side">
+      <h1>Welcome to Credit Card Fraud Detection</h1>
+      <p>Join us to leverage the power of machine learning in identifying and preventing fraudulent transactions. Your security is our top priority.</p>
+    </div>
+
+    <!-- Right Panel: Signup Form -->
+    <div class="right-side">
+      <form method="post" action="">
+        {% csrf_token %}
+        <h2>Create Your Account</h2>
+
+        <label for="name">Name</label>
+        <input type="text" id="name" name="username" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password1">Password</label>
+        <input type="password" id="password1" name="password1" required>
+
+        <label for="password2">Confirm Password</label>
+        <input type="password" id="password2" name="password2" required>
+
+        <button type="submit">Sign Up</button>
+
+        <p class="redirect-text">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+      </form>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <script>alert("{{ message }}");</script>
+    {% endfor %}
+  {% endif %}
+</body>
+</html>
+{% endblock content %}

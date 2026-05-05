@@ -1,0 +1,234 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url("{% static 'images/cre.png' %}");
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 80px;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      width: 100%;
+      
+      z-index: 0;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    header h4 {
+      color: #ffffff;
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    nav a {
+      color: #ffffff;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #ffc107;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 40px 30px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 700px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+
+    .form-group label {
+      color: #444;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 6px;
+      background-color: #f9f9f9;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #28a745;
+      outline: none;
+      background-color: #fff;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      background-color: #2053ac;
+      border: none;
+      padding: 12px;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1d53aa;
+    }
+
+    @media (max-width: 576px) {
+      header h4 {
+        font-size: 1rem;
+      }
+
+      .container {
+        padding: 25px 20px;
+      }
+
+      h1 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header>
+    <h4>Credit Card Fraud Detection</h4>
+    <nav>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Form Container -->
+  <div class="container">
+    <h1>Detect Fraudulent Transaction</h1>
+    <form action="{% url 'result' %}" method="get">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="cc_num">Credit Card Number</label>
+        <input type="text" name="cc_num" id="cc_num" required placeholder="Enter Card Number"/>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Transaction Category</label>
+        <select name="category" id="category" required>
+          <option value="" disabled selected>Select Category</option>
+          <option value="grocery_pos">Grocery (POS)</option>
+          <option value="gas_transport">Gas & Transport</option>
+          <option value="home">Home</option>
+          <option value="shopping_net">Shopping (Online)</option>
+          <option value="kids_pets">Kids & Pets</option>
+          <option value="shopping_pos">Shopping (POS)</option>
+          <option value="personal_care">Personal Care</option>
+          <option value="health_fitness">Health & Fitness</option>
+          <option value="food_dining">Food & Dining</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="misc_pos">Miscellaneous (POS)</option>
+          <option value="misc_net">Miscellaneous (Online)</option>
+          <option value="travel">Travel</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="amt">Transaction Amount ($)</label>
+        <input type="text" name="amt" id="amt" required placeholder="Enter Amount"/>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select name="gender" id="gender" required>
+          <option value="" disabled selected>Select Gender</option>
+          <option value="0">Female</option>
+          <option value="1">Male</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input type="text" name="age" id="age" required placeholder="Enter Age"/>
+      </div>
+
+      <div class="form-group">
+        <label for="trans_month">Transaction Month (1-12)</label>
+        <input type="text" name="trans_month" id="trans_month" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="trans_year">Transaction Year</label>
+        <input type="text" name="trans_year" id="trans_year" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="lat_dis">Latitude Distance</label>
+        <input type="text" name="lat_dis" id="lat_dis" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="long_dis">Longitude Distance</label>
+        <input type="text" name="long_dis" id="long_dis" required/>
+      </div>
+
+      <button type="submit">Predict Fraud</button>
+    </form>
+  </div>
+</body>
+</html>
+{% endblock content %}
