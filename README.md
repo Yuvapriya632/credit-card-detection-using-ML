@@ -67,7 +67,7 @@ CreditML/
 │── static/                # KEEP SAME
 │   ├── css/
 │   └── images/
-│
+│__  DT.pkl                #model save file 
 │── manage.py
 │── requirements.txt
 │── README.md
